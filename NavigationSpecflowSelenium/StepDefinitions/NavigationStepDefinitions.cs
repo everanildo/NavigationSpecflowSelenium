@@ -27,7 +27,6 @@ namespace NavigationSpecflowSelenium.StepDefinitions
             for (int i = 1; i <= numberOfSections; i++)
             {
                 teamInternationalPO.ClickNavigationByIndex(i.ToString());
-                Thread.Sleep(1000);
             }
 
             teamInternationalPO.ClickTeamInternetionalLogo();
@@ -73,6 +72,9 @@ namespace NavigationSpecflowSelenium.StepDefinitions
             teamInternationalPO.SetContactSalesEmail(email);
             teamInternationalPO.SetContactSalesPhone(phone);
             teamInternationalPO.SetContactSalesMessage(message);
+
+            teamInternationalPO.SetContactSalesCheckBox(true, "1");
+            teamInternationalPO.SetContactSalesCheckBox(true, "2");
         }
 
         [Then(@"I validate I have For Whom section with ""([^""]*)"" Option")]
@@ -99,10 +101,8 @@ namespace NavigationSpecflowSelenium.StepDefinitions
             TIPO teamInternationalPO = new TIPO(driver);
             string text = title.Split(' ')[0];
 
-            Thread.Sleep(4000);
 
             teamInternationalPO.hoverOnSectionByText(title);
-            Thread.Sleep(1000);
             Assert.IsTrue(teamInternationalPO.IsDescriptionBeingDisplayedByText(description), $"text with {description} not found");
         }
 
@@ -124,8 +124,6 @@ namespace NavigationSpecflowSelenium.StepDefinitions
             string name = teamInternationalPO.GetCurrentLocationName();
 
             teamInternationalPO.ClickLocationNext();
-
-            Thread.Sleep(2000);
 
             string currentIndex = teamInternationalPO.GetLocationCurrentPosition();
             string currentName = teamInternationalPO.GetCurrentLocationName();
@@ -167,7 +165,6 @@ namespace NavigationSpecflowSelenium.StepDefinitions
 
             teamInternationalPO.ClickTeamMessage();
 
-            Thread.Sleep(2000);
             string message = teamInternationalPO.GetTeamMessageText();
 
             Assert.IsTrue(message.Contains(text), "Error. Text not found.");

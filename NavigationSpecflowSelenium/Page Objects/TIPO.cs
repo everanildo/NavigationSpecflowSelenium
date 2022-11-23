@@ -28,7 +28,7 @@ namespace NavigationSpecflowSelenium.Page_Objects
         private readonly string contactSales = ".//span[contains(text(), 'Contact Sales')]//parent::a";
         private readonly string gotIt = ".//div[contains(text(), 'GOT IT')]";
         private readonly string teamMessageText = ".//div[contains(text(), 'mature global')]";
-
+        private readonly string contactSalesFrame = ".//div[@id = 'mobile-contact-form']//iframe[@title = 'Candidates Form']";
 
         //Logistics & transportation form 
         private readonly string firstName = ".//input[@data-id = 'firstName']";
@@ -38,6 +38,7 @@ namespace NavigationSpecflowSelenium.Page_Objects
         private readonly string phone = ".//input[@data-id = 'phone']";
         private readonly string message = ".//input[@data-id = 'message']";
         private readonly string contactSalesCheckbox = "(.//input[@type = 'checkbox'])[{0}]";
+        private readonly string contactSalesCheckboxClick = "(.//lightning-layout-item[@class = 'checkbox-container']//span)[{0}]";
 
         //general for Whom:
         private readonly string forWhomOptionByText = ".//li[contains (text(), '{0}')]";
@@ -109,7 +110,8 @@ namespace NavigationSpecflowSelenium.Page_Objects
 
         public void SetContactSalesFirstName(string value)
         {
-            driver.ScrollEntirePage();
+
+            driver.SwitchTo().Frame(driver.FindElement(By.XPath(contactSalesFrame)));
             IWebElement element = driver.FindElement(By.XPath(firstName));
 
             element.Clear();
@@ -119,7 +121,6 @@ namespace NavigationSpecflowSelenium.Page_Objects
         public void SetContactSalesLastName(string value)
         {
             IWebElement element = driver.FindElement(By.XPath(lastName));
-            driver.ScrollToElement(element);
 
             element.Clear();
             element.SendKeys(value);
@@ -128,7 +129,6 @@ namespace NavigationSpecflowSelenium.Page_Objects
         public void SetContactSalesCompany(string value)
         {
             IWebElement element = driver.FindElement(By.XPath(company));
-            driver.ScrollToElement(element);
 
             element.Clear();
             element.SendKeys(value);
@@ -137,7 +137,6 @@ namespace NavigationSpecflowSelenium.Page_Objects
         public void SetContactSalesEmail(string value)
         {
             IWebElement element = driver.FindElement(By.XPath(email));
-            driver.ScrollToElement(element);
 
             element.Clear();
             element.SendKeys(value);
@@ -146,7 +145,6 @@ namespace NavigationSpecflowSelenium.Page_Objects
         public void SetContactSalesPhone(string value)
         {
             IWebElement element = driver.FindElement(By.XPath(phone));
-            driver.ScrollToElement(element);
 
             element.Clear();
             element.SendKeys(value);
@@ -155,7 +153,6 @@ namespace NavigationSpecflowSelenium.Page_Objects
         public void SetContactSalesMessage(string value)
         {
             IWebElement element = driver.FindElement(By.XPath(message));
-            driver.ScrollToElement(element);
 
             element.Clear();
             element.SendKeys(value);
@@ -167,7 +164,7 @@ namespace NavigationSpecflowSelenium.Page_Objects
 
             bool currentStatus = Boolean.Parse(element.GetDomProperty("checked"));
             if (currentStatus != status)
-                element.Click();
+                driver.FindElement(By.XPath(String.Format(contactSalesCheckboxClick, index))).Click();
         }
 
         public bool GetForWhomOptionByText(string text)
@@ -181,7 +178,6 @@ namespace NavigationSpecflowSelenium.Page_Objects
 
         public bool IsSectionHeaderDisplayedByText(string text)
         {
-            Thread.Sleep(3000);
             if (text.Contains("Contact Sales"))            
                 return driver.FindElement(By.XPath(ContactSalesHeaderBy)).Displayed;
             else            
